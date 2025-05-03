@@ -64,7 +64,7 @@ type ResultData struct {
 			Name    string `json:"name"`
 			ImageID string `json:"image_id"`
 		} `json:"away"`
-		SS string `json:"ss"` // Score string (e.g., "117-217")
+		SS string `json:"ss"`
 	} `json:"results"`
 }
 
@@ -136,6 +136,33 @@ type VolleyResultData struct {
 	} `json:"results"`
 }
 
+type Fixture struct {
+	ID       string `json:"id"`
+	HomeId   string `json:"homeId"`
+	HomeName string `json:"homeName"`
+	AwayId   string `json:"awayId"`
+	AwayName string `json:"awayName"`
+}
+
+type Odd struct {
+	ID       string `json:"id"`
+	Odds     string `json:"odds"`
+	Name     string `json:"name"`
+	Header   string `json:"header"`
+	Handicap string `json:"handicap"`
+}
+
 type CricketRequest struct {
-	Type string `json:"type"`
+	ID     string `json:"id"`
+	Odds   string `json:"odds"`
+	Name   string `json:"name"`
+	Header string `json:"header"`
+}
+
+type VolleyballRequest struct {
+	ID       string `json:"id"`
+	Odds     string `json:"odds"`
+	Name     string `json:"name"`
+	Header   string `json:"header"`
+	Handicap string `json:"handicap"`
 }

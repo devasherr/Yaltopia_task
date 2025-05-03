@@ -8,6 +8,7 @@ import (
 	"strconv"
 	"strings"
 	"yaltopia_task/data"
+	"yaltopia_task/models"
 
 	"github.com/gofiber/fiber/v2"
 )
@@ -35,23 +36,11 @@ func GetCricketFixtures(c *fiber.Ctx) error {
 		return err
 	}
 
-	var fixtures []struct {
-		Id       string `json:"id"`
-		HomeId   string `json:"homeId"`
-		HomeName string `json:"homeName"`
-		AwayId   string `json:"awayId"`
-		AwayName string `json:"awayName"`
-	}
+	var fixtures []models.Fixture
 
 	for _, prematch := range prematchData.Results {
-		fixture := struct {
-			Id       string `json:"id"`
-			HomeId   string `json:"homeId"`
-			HomeName string `json:"homeName"`
-			AwayId   string `json:"awayId"`
-			AwayName string `json:"awayName"`
-		}{
-			Id: prematch.EventID,
+		fixture := models.Fixture{
+			ID: prematch.EventID,
 		}
 
 		fixtures = append(fixtures, fixture)
@@ -59,7 +48,7 @@ func GetCricketFixtures(c *fiber.Ctx) error {
 
 	for _, res := range resultsData.Results {
 		for i := range fixtures {
-			if res.ID == fixtures[i].Id {
+			if res.ID == fixtures[i].ID {
 				fixtures[i].HomeId = res.Home.ID
 				fixtures[i].HomeName = res.Home.Name
 				fixtures[i].AwayId = res.Away.ID
@@ -86,21 +75,13 @@ func GetCricket1x2(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 
-	var odds []struct {
-		Id   string `json:"id"`
-		Odds string `json:"odds"`
-		Name string `json:"name"`
-	}
+	var odds []models.Odd
 
 	for _, match := range prematchData.Results {
 		if match.EventID == id {
 			for i := range match.Main.SP.ToWinTheMatch.Odds {
-				odd := struct {
-					Id   string `json:"id"`
-					Odds string `json:"odds"`
-					Name string `json:"name"`
-				}{
-					Id:   match.Main.SP.ToWinTheMatch.Odds[i].ID,
+				odd := models.Odd{
+					ID:   match.Main.SP.ToWinTheMatch.Odds[i].ID,
 					Odds: match.Main.SP.ToWinTheMatch.Odds[i].Odds,
 					Name: match.Main.SP.ToWinTheMatch.Odds[i].Name,
 				}
@@ -133,23 +114,13 @@ func GetCricketOverUnder(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 
-	var odds []struct {
-		Id     string `json:"id"`
-		Odds   string `json:"odds"`
-		Name   string `json:"name"`
-		Header string `json:"header"`
-	}
+	var odds []models.Odd
 
 	for _, prematch := range prematchData.Results {
 		if prematch.EventID == id {
 			for i := range prematch.Innings1.SP.FirstInningsScore.Odds {
-				odd := struct {
-					Id     string `json:"id"`
-					Odds   string `json:"odds"`
-					Name   string `json:"name"`
-					Header string `json:"header"`
-				}{
-					Id:     prematch.Innings1.SP.FirstInningsScore.Odds[i].ID,
+				odd := models.Odd{
+					ID:     prematch.Innings1.SP.FirstInningsScore.Odds[i].ID,
 					Odds:   prematch.Innings1.SP.FirstInningsScore.Odds[i].Odds,
 					Name:   prematch.Innings1.SP.FirstInningsScore.Odds[i].Name,
 					Header: prematch.Innings1.SP.FirstInningsScore.Odds[i].Header,
@@ -166,11 +137,7 @@ func GetCricketOverUnder(c *fiber.Ctx) error {
 func EvaluateCricket1x2(c *fiber.Ctx) error {
 	path := getPath()
 
-	request := struct {
-		Id   string
-		Name string
-		Odds string
-	}{}
+	var request models.CricketRequest
 
 	if err := json.Unmarshal(c.Body(), &request); err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
@@ -189,7 +156,7 @@ func EvaluateCricket1x2(c *fiber.Ctx) error {
 	}
 
 	for _, res := range results.Results {
-		if res.ID == request.Id {
+		if res.ID == request.ID {
 			score := strings.Split(res.SS, "-")
 			winner := "0"
 
@@ -221,12 +188,7 @@ func EvaluateCricket1x2(c *fiber.Ctx) error {
 func EvaluateCricketUnderAbove(c *fiber.Ctx) error {
 	path := getPath()
 
-	request := struct {
-		Id     string `json:"id"`
-		Name   string `json:"name"`
-		Odds   string `json:"odds"`
-		Header string `json:"header"`
-	}{}
+	var request models.CricketRequest
 
 	if err := json.Unmarshal(c.Body(), &request); err != nil {
 		return c.Status(http.StatusInternalServerError).JSON(fiber.Map{
@@ -245,7 +207,7 @@ func EvaluateCricketUnderAbove(c *fiber.Ctx) error {
 	}
 
 	for _, res := range results.Results {
-		if res.ID == request.Id {
+		if res.ID == request.ID {
 			score := strings.Split(res.SS, "-")
 
 			x, _ := strconv.Atoi(score[0])
@@ -298,23 +260,11 @@ func GetVolleyFixtures(c *fiber.Ctx) error {
 		return err
 	}
 
-	var fixtures []struct {
-		Id       string `json:"id"`
-		HomeId   string `json:"homeId"`
-		HomeName string `json:"homeName"`
-		AwayId   string `json:"awayId"`
-		AwayName string `json:"awayName"`
-	}
+	var fixtures []models.Fixture
 
 	for _, prematch := range prematchData.Results {
-		fixture := struct {
-			Id       string `json:"id"`
-			HomeId   string `json:"homeId"`
-			HomeName string `json:"homeName"`
-			AwayId   string `json:"awayId"`
-			AwayName string `json:"awayName"`
-		}{
-			Id: prematch.EventID,
+		fixture := models.Fixture{
+			ID: prematch.EventID,
 		}
 
 		fixtures = append(fixtures, fixture)
@@ -323,7 +273,7 @@ func GetVolleyFixtures(c *fiber.Ctx) error {
 	// Match with results data to get team names
 	for _, res := range resultsData.Results {
 		for i := range fixtures {
-			if res.ID == fixtures[i].Id {
+			if res.ID == fixtures[i].ID {
 				fixtures[i].HomeId = res.Home.ID
 				fixtures[i].HomeName = res.Home.Name
 				fixtures[i].AwayId = res.Away.ID
@@ -350,30 +300,21 @@ func GetVolley1x2(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 
-	var odds []struct {
-		Id     string `json:"id"`
-		Odds   string `json:"odds"`
-		Name   string `json:"name"`
-		Header string `json:"header"`
-	}
+	var odds []models.Odd
 
 	for _, match := range prematchData.Results {
 		if match.EventID == id {
-			// Check if game_lines exists in main SP
+			// check if game_lines exists in main SP
 			if match.Main.Sp.GameLines.Odds != nil {
 				for _, odd := range match.Main.Sp.GameLines.Odds {
-					// Filter for winner odds (where name is "1" or "2")
 					if odd.Header == "1" || odd.Header == "2" {
-						odds = append(odds, struct {
-							Id     string `json:"id"`
-							Odds   string `json:"odds"`
-							Name   string `json:"name"`
-							Header string `json:"header"`
-						}{
-							Id:     odd.ID,
+						odd := models.Odd{
+							ID:     odd.ID,
 							Odds:   odd.Odds,
 							Header: odd.Header,
-						})
+						}
+
+						odds = append(odds, odd)
 					}
 				}
 			}
@@ -398,28 +339,16 @@ func GetVolleyOverUnder(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 
-	var odds []struct {
-		Id       string
-		Odds     string
-		Name     string
-		Header   string
-		Handicap string
-	}
+	var odds []models.Odd
 
 	for _, match := range prematchData.Results {
 		if match.EventID == id {
-			// Check main SP game_lines for total odds
+			// check main SP game_lines for total odds
 			if match.Main.Sp.GameLines.Odds != nil {
 				for _, odd := range match.Main.Sp.GameLines.Odds {
 					if odd.Name == "Total" && (odd.Header == "1" || odd.Header == "2") {
-						odds = append(odds, struct {
-							Id       string
-							Odds     string
-							Name     string
-							Header   string
-							Handicap string
-						}{
-							Id:       odd.ID,
+						odds = append(odds, models.Odd{
+							ID:       odd.ID,
 							Odds:     odd.Odds,
 							Name:     odd.Name,
 							Header:   odd.Header,
@@ -429,19 +358,13 @@ func GetVolleyOverUnder(c *fiber.Ctx) error {
 				}
 			}
 
-			// Check set_1_lines in others if available
+			// check set_1_lines in others if available
 			for _, other := range match.Others {
 				if other.Sp.Set1Lines.Odds != nil {
 					for _, odd := range other.Sp.Set1Lines.Odds {
 						if odd.Name == "Total" {
-							odds = append(odds, struct {
-								Id       string
-								Odds     string
-								Name     string
-								Header   string
-								Handicap string
-							}{
-								Id:       odd.ID,
+							odds = append(odds, models.Odd{
+								ID:       odd.ID,
 								Odds:     odd.Odds,
 								Name:     odd.Name,
 								Header:   odd.Header,
@@ -481,7 +404,6 @@ func GetVolleyCorrectScore(c *fiber.Ctx) error {
 
 	for _, match := range prematchData.Results {
 		if match.EventID == id {
-			// Check correct_set_score in main SP
 			if match.Main.Sp.CorrectSetScore.Odds != nil {
 				for _, score := range match.Main.Sp.CorrectSetScore.Odds {
 					scores = append(scores, struct {
@@ -506,12 +428,7 @@ func GetVolleyCorrectScore(c *fiber.Ctx) error {
 func EvaluateVolley1x2(c *fiber.Ctx) error {
 	path := getPath()
 
-	var request struct {
-		Id     string
-		Name   string
-		Odds   string
-		Header string
-	}
+	var request models.VolleyballRequest
 
 	if err := json.Unmarshal(c.Body(), &request); err != nil {
 		return err
@@ -528,7 +445,7 @@ func EvaluateVolley1x2(c *fiber.Ctx) error {
 	}
 
 	for _, res := range results.Results {
-		if res.ID == request.Id {
+		if res.ID == request.ID {
 			score := strings.Split(res.SS, "-")
 			x, _ := strconv.Atoi(score[0])
 			y, _ := strconv.Atoi(score[1])
@@ -558,13 +475,7 @@ func EvaluateVolley1x2(c *fiber.Ctx) error {
 func EvaluateVolleyUnderAbove(c *fiber.Ctx) error {
 	path := getPath()
 
-	var request struct {
-		Id       string
-		Name     string
-		Odds     string
-		Header   string
-		Handicap string
-	}
+	var request models.VolleyballRequest
 
 	if err := json.Unmarshal(c.Body(), &request); err != nil {
 		return err
@@ -581,7 +492,7 @@ func EvaluateVolleyUnderAbove(c *fiber.Ctx) error {
 	}
 
 	for _, res := range results.Results {
-		if res.ID == request.Id {
+		if res.ID == request.ID {
 			total := 0
 			for i := range res.Scores {
 				x, _ := strconv.Atoi(res.Scores[i].Home)
@@ -615,12 +526,7 @@ func EvaluateVolleyUnderAbove(c *fiber.Ctx) error {
 func EvaluateVolleyCorrectScore(c *fiber.Ctx) error {
 	path := getPath()
 
-	var request struct {
-		Id     string
-		Odds   string
-		Name   string
-		Header string
-	}
+	var request models.VolleyballRequest
 
 	if err := json.Unmarshal(c.Body(), &request); err != nil {
 		return err
@@ -637,7 +543,7 @@ func EvaluateVolleyCorrectScore(c *fiber.Ctx) error {
 	}
 
 	for _, res := range results.Results {
-		if res.ID == request.Id {
+		if res.ID == request.ID {
 			verdict := "Wrong"
 
 			if res.SS == request.Name {
