@@ -1,8 +1,70 @@
 import BetGroup from "../components/BetGroup";
 import BetOption from "../components/BetOption";
-import { bets } from "../data";
+import { useState, useEffect } from "react";
+import { BASE_URL } from "../utils";
+import axios from "axios";
 
 export default function FixturePage() {
+  const [bets, setBets] = useState({
+    "1x2": [],
+    underOverVolley: [],
+    correctScore: [],
+  });
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fixtureId = window.location.href.split("/")[5];
+
+  const fetchBets = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const volley_1x2 = await axios.get(
+        `${BASE_URL}/volleyball/1x2/${fixtureId}`
+      );
+      const volley_overunder = await axios.get(
+        `${BASE_URL}/volleyball/over-under/${fixtureId}`
+      );
+
+      const volley_correctscore = await axios.get(
+        `${BASE_URL}/volleyball/correct-score/${fixtureId}`
+      );
+
+      setBets({
+        "1x2": volley_1x2.data || [],
+        underOverVolley: volley_overunder.data || [],
+        correctScore: volley_correctscore.data || [],
+      });
+    } catch (err) {
+      console.error("Error fetching bets:", err);
+      setError("Failed to load betting options.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBets();
+  }, [fixtureId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
+        {error}
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-gray-900 p-6 mx-auto">
       <h1 className="text-2xl font-bold mb-6 text-white">
@@ -14,9 +76,9 @@ export default function FixturePage() {
           <BetOption
             key={opt.id}
             label={
-              opt.name === "1"
+              opt.header === "1"
                 ? "Home Win"
-                : opt.name === "2"
+                : opt.header === "2"
                 ? "Away Win"
                 : "Draw"
             }
