@@ -1,10 +1,72 @@
-import { useState } from "react";
-import { sportsData } from "../data";
+import { useEffect, useState } from "react";
 import SportList from "../components/SportList";
 import FixtureList from "../components/FixtureList";
+import { BASE_URL } from "../utils";
+import axios from "axios";
 
 export default function Dashboard() {
   const [selectedSportIndex, setSelectedSportIndex] = useState(null);
+  const [sportsData, setSportsData] = useState([
+    {
+      name: "cricket",
+      fixtures: [],
+    },
+    {
+      name: "volleyball",
+      fixtures: [],
+    },
+  ]);
+
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchFixtures = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const cricketResponse = await axios.get(`${BASE_URL}/cricket/fixtures`);
+      const volleyballResponse = await axios.get(
+        `${BASE_URL}/volleyball/fixtures`
+      );
+
+      setSportsData([
+        {
+          name: "cricket",
+          fixtures: cricketResponse.data || [],
+        },
+        {
+          name: "volleyball",
+          fixtures: volleyballResponse.data || [],
+        },
+      ]);
+    } catch (err) {
+      console.error("Error fetching fixtures:", err);
+      setError("Failed to load fixtures.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchFixtures();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 p-4 md:p-8">
@@ -28,13 +90,16 @@ export default function Dashboard() {
               <SportList sports={sportsData} onSelect={setSelectedSportIndex} />
             </div>
 
-            {/* Main Content */}
             <div className="lg:col-span-3">
               {selectedSportIndex !== null ? (
                 <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
                   <div className="bg-gradient-to-r from-blue-700 to-blue-900 p-4">
                     <h2 className="text-xl font-bold text-white">
-                      {sportsData[selectedSportIndex].name} Fixtures
+                      {sportsData[selectedSportIndex].name
+                        .charAt(0)
+                        .toUpperCase() +
+                        sportsData[selectedSportIndex].name.slice(1)}{" "}
+                      Fixtures
                     </h2>
                   </div>
                   <FixtureList
