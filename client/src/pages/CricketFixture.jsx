@@ -1,10 +1,62 @@
 import BetGroup from "../components/BetGroup";
 import BetOption from "../components/BetOption";
-import { bets } from "../data";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { BASE_URL } from "../utils";
+import axios from "axios";
 
 export default function FixturePage() {
-  const [sport, setSport] = useState("cricket");
+  const [bets, setBets] = useState({
+    "1x2": [],
+    underOverCricket: [],
+  });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fixtureId = window.location.href.split("/")[5];
+
+  const fetchBets = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+
+      const cricket_1x2 = await axios.get(
+        `${BASE_URL}/cricket/1x2/${fixtureId}`
+      );
+      const cricket_overunder = await axios.get(
+        `${BASE_URL}/cricket/1x2/${fixtureId}`
+      );
+
+      setBets({
+        "1x2": cricket_1x2.data || [],
+        underOverCricket: cricket_overunder.data || [],
+      });
+    } catch (err) {
+      console.error("Error fetching bets:", err);
+      setError("Failed to load betting options.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchBets();
+  }, [fixtureId]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-900">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-screen bg-gray-900 text-white">
+        {error}
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gray-900 p-6 mx-auto">
