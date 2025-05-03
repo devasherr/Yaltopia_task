@@ -1,0 +1,179 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "FI": "173863967",
+      "event_id": "9879535",
+      "main": {
+        "sp": {
+          "game_lines": {
+            "odds": [
+              {
+                "id": "PC666717702",
+                "name": "Winner",
+                "odds": "",
+                "header": "",
+                "handicap": ""
+              },
+              {
+                "id": "PC670136308",
+                "name": "Handicap",
+                "odds": "",
+                "header": "",
+                "handicap": ""
+              },
+              {
+                "id": "PC670136372",
+                "name": "Total",
+                "odds": "",
+                "header": "",
+                "handicap": ""
+              },
+              {
+                "id": "666717702",
+                "name": "",
+                "odds": "1.44",
+                "header": "1",
+                "handicap": ""
+              },
+              {
+                "id": "670136308",
+                "name": "",
+                "odds": "1.83",
+                "header": "1",
+                "handicap": "-1.5"
+              },
+              {
+                "id": "670136372",
+                "name": "",
+                "odds": "1.83",
+                "header": "1",
+                "handicap": "O 177.5"
+              },
+              {
+                "id": "666717703",
+                "name": "",
+                "odds": "2.62",
+                "header": "2",
+                "handicap": ""
+              },
+              {
+                "id": "670136309",
+                "name": "",
+                "odds": "1.83",
+                "header": "2",
+                "handicap": "+1.5"
+              },
+              {
+                "id": "670136374",
+                "name": "",
+                "odds": "1.83",
+                "header": "2",
+                "handicap": "U 177.5"
+              }
+            ]
+          },
+          "correct_set_score": {
+            "odds": [
+              {
+                "id": "670136282",
+                "odds": "3.10",
+                "name": "3-0",
+                "header": "1"
+              },
+              {
+                "id": "670136286",
+                "odds": "4.00",
+                "name": "3-1",
+                "header": "1"
+              },
+              {
+                "id": "670136288",
+                "odds": "5.00",
+                "name": "3-2",
+                "header": "1"
+              },
+              {
+                "id": "670136294",
+                "odds": "8.00",
+                "name": "3-0",
+                "header": "2"
+              },
+              {
+                "id": "670136301",
+                "odds": "7.50",
+                "name": "3-1",
+                "header": "2"
+              },
+              {
+                "id": "670136306",
+                "odds": "7.00",
+                "name": "3-2",
+                "header": "2"
+              }
+            ]
+          }
+        }
+      },
+      "others": [
+        {
+          "sp": {
+            "set_1_lines": {
+              "odds": [
+                {
+                  "id": "670136310",
+                  "odds": "1.57",
+                  "name": "Winner",
+                  "header": "1",
+                  "handicap": ""
+                },
+                {
+                  "id": "670136314",
+                  "odds": "1.83",
+                  "name": "Total",
+                  "header": "1",
+                  "handicap": "O 45.5"
+                },
+                {
+                  "id": "670136311",
+                  "odds": "2.25",
+                  "name": "Winner",
+                  "header": "2",
+                  "handicap": ""
+                },
+                {
+                  "id": "670136315",
+                  "odds": "1.83",
+                  "name": "Total",
+                  "header": "2",
+                  "handicap": "U 45.5"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "sp": {
+            "set_1_lines": {
+              "odds": null
+            }
+          }
+        },
+        {
+          "sp": {
+            "set_1_lines": {
+              "odds": null
+            }
+          }
+        },
+        {
+          "sp": {
+            "set_1_lines": {
+              "odds": null
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

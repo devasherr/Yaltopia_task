@@ -1,0 +1,26 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "9703206",
+      "sport_id": "3",
+      "time": "1746108000",
+      "time_status": "3",
+      "league": {
+        "id": "26431",
+        "name": "Indian Premier League"
+      },
+      "home": {
+        "id": "202949",
+        "name": "Rajasthan Royals",
+        "image_id": "152320"
+      },
+      "away": {
+        "id": "162053",
+        "name": "Mumbai Indians",
+        "image_id": "152324"
+      },
+      "ss": "117-217"
+    }
+  ]
+}

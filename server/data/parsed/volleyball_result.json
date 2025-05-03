@@ -1,0 +1,45 @@
+{
+  "success": 1,
+  "results": [
+    {
+      "id": "9879535",
+      "time": "1746108000",
+      "time_status": "3",
+      "league": {
+        "id": "2347",
+        "name": "Portugal Nacional Women"
+      },
+      "home": {
+        "id": "210549",
+        "name": "Sporting CP Women"
+      },
+      "away": {
+        "id": "307260",
+        "name": "FC Porto Women"
+      },
+      "ss": "2-3",
+      "scores": {
+        "1": {
+          "home": "25",
+          "away": "23"
+        },
+        "2": {
+          "home": "20",
+          "away": "25"
+        },
+        "3": {
+          "home": "25",
+          "away": "20"
+        },
+        "4": {
+          "home": "9",
+          "away": "25"
+        },
+        "5": {
+          "home": "9",
+          "away": "15"
+        }
+      }
+    }
+  ]
+}
