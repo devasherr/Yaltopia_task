@@ -40,6 +40,7 @@ export default function Dashboard() {
                   <FixtureList
                     key={selectedSportIndex}
                     fixtures={sportsData[selectedSportIndex].fixtures}
+                    sport={sportsData[selectedSportIndex].name}
                   />
                 </div>
               ) : (

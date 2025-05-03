@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-export default function FixtureList({ fixtures }) {
+export default function FixtureList({ fixtures, sport }) {
   const navigate = useNavigate();
 
   if (!fixtures || fixtures.length === 0) {
@@ -16,7 +16,7 @@ export default function FixtureList({ fixtures }) {
       {fixtures.map((f) => (
         <div
           key={f.id}
-          onClick={() => navigate(`/fixture/${f.id}`)}
+          onClick={() => navigate(`/fixture/${sport}/${f.id}`)}
           className="cursor-pointer hover:bg-gray-700 transition-colors duration-150 p-4"
         >
           <div className="flex items-center justify-between">
